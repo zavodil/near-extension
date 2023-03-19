@@ -13,6 +13,7 @@ const publicDir = resolve(__dirname, "public");
 const isDev = process.env.__DEV__ === "true";
 
 export default defineConfig({
+  //optimizeDeps.disabled = false and build.commonjsOptions.include = [].
   resolve: {
     alias: {
       "@src": root,
@@ -22,9 +23,15 @@ export default defineConfig({
   },
   plugins: [react(), makeManifest(), customDynamicImport()],
   publicDir,
+  optimizeDeps: {
+    disabled: false
+  },
   build: {
     outDir,
     sourcemap: isDev,
+    commonjsOptions: {
+      include: []
+    },
     rollupOptions: {
       input: {
         content: resolve(pagesDir, "content", "index.ts"),

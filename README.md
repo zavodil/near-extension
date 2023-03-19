@@ -1,26 +1,24 @@
-# DefiLlama Extension
+# Near Web3 Extension
 
-A browser extension that gives you godmode on Etherscan (and other blockchain explorers), while protecting you from suspicious URLs you visit.
+A browser extension that gives you Near Social data on Near Wallet.
 
 ## Features
 
-### Wallet tags on Etherscan
+### dApp account tags on contract auth
 
-Llamas have done their analysis and tagged tens on millions of addresses with behavioral or entity tags, allowing you to unmask the mysterious figures behind each crypto wallet, right inside your favorite blockchain explorers.
+Check the public tags for a given smart contract when adding its key to your account
 
-### Accurate pricing for exotic tokens on Etherscan
+### Verify receiver's NEAR Account when sending tokens
 
-This extension wields the limitless llama power to show you accurate pricing of any tokens that are missing prices on Etherscan. It also re-calculates the token balances after refilling the missing prices.
+Know the receiver's profile and public tags before sending funds
 
-### Phishing link warning
+### Near Social notification feed and updates counter
 
-The cute llama icon on your browser extension tool bar is an unintrusive indicator that will turn red when you are visiting a suspicious website, or turn green when you are visiting a trusted website. Stay safe with the llamas!
+Watch Near Social updates right from your wallet
 
-## Privacy
+### Social profile in wallet
 
-We do not track you in any way in the extension, and we only request access to Etherscan and similar blockchain explorers, in order to inject llama token prices and wallet tags.
-
-The extension is completely open source, and we encourage curious users or auditors to unpack the `.crx` file you get from the Chrome Web Store (it's just a zip file!) to verify no tracking or malicious code is added during the build process.
+See your social avatar for your current Near wallet account
 
 ## Installation (prepare for chrome web store)
 

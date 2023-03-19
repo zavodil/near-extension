@@ -10,24 +10,15 @@ const manifest: ManifestType = {
   action: {
     default_title: packageJson.displayName,
     default_popup: "src/pages/popup/index.html",
-    default_icon: "icon-34.png",
+    default_icon: "near_logo.png",
   },
   icons: {
-    "128": "icon-128.png",
+    "128": "near_logo.png",
   },
   content_scripts: [
     {
       matches: [
-        "*://*.etherscan.io/*",
-        "*://*.bscscan.com/*",
-        "*://*.snowtrace.io/*",
-        "*://*.ftmscan.com/*",
-        "*://*.arbiscan.io/*",
-        "*://*.polygonscan.com/*",
-        "*://*.cronoscan.com/*",
-        "*://*.moonscan.io/*",
-        "*://*.gnosisscan.io/*",
-        "*://*.bobascan.com/*",
+        "*://*.wallet.near.org/*"
       ],
       js: ["src/pages/content/index.js"],
     },
@@ -45,8 +36,7 @@ const manifest: ManifestType = {
         "assets/img/protocols/*.webp",
         "assets/webp/*.webp",
         "assets/webp/*.chunk.webp",
-        "icon-128.png",
-        "icon-34.png",
+        "near_logo.png",
       ],
       matches: ["<all_urls>"],
     },

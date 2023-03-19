@@ -2,11 +2,11 @@ console.log("background loaded");
 
 import Browser from "webextension-polyfill";
 
-import cute from "@assets/img/memes/cute-128.png";
+import cute from "@assets/img/near_logo_green.png";
 import gib from "@assets/img/memes/gib-128.png";
-import maxPain from "@assets/img/memes/max-pain-128.png";
-import que from "@assets/img/memes/que-128.png";
-import upOnly from "@assets/img/memes/up-only-128.png";
+import maxPain from "@assets/img/near_logo_red.png";
+import que from "@assets/img/near_logo.png";
+import upOnly from "@assets/img/near_logo_green.png";
 
 import { Coin, Protocol, coinsDb, protocolsDb, allowedDomainsDb, blockedDomainsDb, fuzzyDomainsDb } from "../libs/db";
 import { PROTOCOLS_API, METAMASK_LIST_CONFIG_API, DEFILLAMA_DIRECTORY_API } from "../libs/constants";
@@ -33,7 +33,10 @@ async function handlePhishingCheck() {
   let reason = "Unknown website";
   const tab = await getCurrentTab();
   try {
-    const url = tab.url;
+    const url = tab?.url;
+    if(!url) {
+      return;
+    }
     if (url.startsWith("https://metamask.github.io/phishing-warning")) {
       // already captured and redirected to metamask phishing warning page
       isPhishing = true;
@@ -77,8 +80,7 @@ async function handlePhishingCheck() {
     Browser.action.setTitle({ title: reason });
     return;
   }
-
-  if (isPhishing) {
+  else if (isPhishing) {
     Browser.action.setIcon({ path: maxPain });
     Browser.action.setTitle({ title: reason });
   } else {
@@ -125,14 +127,24 @@ export async function updateProtocolsDb() {
 
 export async function updateDomainDbs() {
   console.log("updateDomainDbs", "start");
-  const rawProtocols = await fetch(PROTOCOLS_API).then((res) => res.json());
+
+  const protocols: Protocol[] = [
+    {
+      logo: "",
+      name: "Near Wallet",
+      url: "https://wallet.near.org",
+      category: "wallet",
+    }
+  ]
+
+  /*const rawProtocols = await fetch(PROTOCOLS_API).then((res) => res.json());
   const protocols = (rawProtocols["protocols"]?.map((x: any) => ({
     name: x.name,
     url: x.url,
     logo: x.logo,
     category: x.category,
     tvl: x.tvl,
-  })) ?? []) as Protocol[];
+  })) ?? []) as Protocol[];*/
   const protocolDomains = protocols
     .map((x) => {
       try {
@@ -144,6 +156,10 @@ export async function updateDomainDbs() {
     })
     .filter((x) => x !== null)
     .map((x) => ({ domain: x }));
+
+  allowedDomainsDb.domains.bulkPut(protocolDomains);
+  fuzzyDomainsDb.domains.bulkPut(protocolDomains);
+  /*
   const metamaskLists = (await fetch(METAMASK_LIST_CONFIG_API).then((res) => res.json())) as {
     fuzzylist: string[];
     whitelist: string[];
@@ -167,6 +183,7 @@ export async function updateDomainDbs() {
   fuzzyDomainsDb.domains.bulkPut(metamaskAllowedDomains);
   fuzzyDomainsDb.domains.bulkPut(protocolDomains);
   fuzzyDomainsDb.domains.bulkPut(defillamaDomains);
+   */
   console.log("updateDomainDbs", "done");
   console.log("allowedDomainsDb", await allowedDomainsDb.domains.count());
   console.log("blockedDomainsDb", await blockedDomainsDb.domains.count());
@@ -186,14 +203,14 @@ function setupUpdateCoinsDb() {
   console.log("setupUpdateCoinsDb");
   Browser.alarms.get("updateCoinsDb").then((a) => {
     if (!a) {
-      console.log("setupUpdateCoinsDb", "create");
-      updateCoinsDb();
-      Browser.alarms.create("updateCoinsDb", { periodInMinutes: 240 }); // update once every 4 hours
+      //console.log("setupUpdateCoinsDb", "create");
+      //updateCoinsDb();
+      //Browser.alarms.create("updateCoinsDb", { periodInMinutes: 240 }); // update once every 4 hours
     }
   });
 }
 
-function setupUpdateProtocolsDb() {
+function setupUpdateProtocolsDb() {/*
   console.log("setupUpdateProtocolsDb");
   Browser.alarms.get("updateProtocolsDb").then((a) => {
     if (!a) {
@@ -201,7 +218,7 @@ function setupUpdateProtocolsDb() {
       updateProtocolsDb();
       Browser.alarms.create("updateProtocolsDb", { periodInMinutes: 240 }); // update once every 4 hours
     }
-  });
+  });*/
 }
 
 function setupUpdateDomainDbs() {
@@ -217,8 +234,8 @@ function setupUpdateDomainDbs() {
 
 function startupTasks() {
   console.log("startupTasks", "start");
-  setupUpdateCoinsDb();
-  setupUpdateProtocolsDb();
+  //setupUpdateCoinsDb();
+  //setupUpdateProtocolsDb();
   setupUpdateDomainDbs();
   Browser.action.setIcon({ path: cute });
   console.log("startupTasks", "done");
